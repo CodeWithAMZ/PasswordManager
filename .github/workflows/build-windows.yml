@@ -1,0 +1,55 @@
+name: Build Windows EXE
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install pinned build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install flet==0.28.0 pyinstaller
+
+      - name: Build standalone Windows executable
+        run: |
+          flet pack PassGenUI.py --name MyPasswordGenerator --product-name "My Password Generator" --product-version "1.0.0" --file-version "1.0.0.0" --file-description "My Password Generator" --company-name "CodeWithAMZ" --yes
+
+      - name: Prepare download ZIP
+        shell: pwsh
+        run: |
+          if (!(Test-Path "dist/MyPasswordGenerator.exe")) {
+            throw "Build did not produce dist/MyPasswordGenerator.exe"
+          }
+          Compress-Archive -Path "dist/MyPasswordGenerator.exe" -DestinationPath "MyPasswordGenerator-Windows.zip" -Force
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyPasswordGenerator-Windows
+          path: MyPasswordGenerator-Windows.zip
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: My Password Generator ${{ github.ref_name }}
+          generate_release_notes: true
+          files: MyPasswordGenerator-Windows.zip
