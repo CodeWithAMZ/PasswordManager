@@ -24,6 +24,17 @@ A simple desktop password generator built with **Python** and **Flet**.
 
 > **Important:** This project is configured for **Flet 0.28.0**. Install this exact version rather than the latest release. Newer Flet versions may contain API changes that are incompatible with this project's code.
 
+## Download for Windows
+
+A standalone Windows executable is built automatically by GitHub Actions. When a versioned tag (for example, `v1.0.0`) is pushed, the workflow builds the app and attaches `MyPasswordGenerator-Windows.zip` to the GitHub Release.
+
+1. Open the repository's **Releases** page.
+2. Download `MyPasswordGenerator-Windows.zip`.
+3. Extract the ZIP file.
+4. Double-click `MyPasswordGenerator.exe`.
+
+**Python and Flet do not need to be installed on the target PC.** The executable bundles the Python app and its required dependencies. The first launch may take a little longer while the bundled app starts.
+
 ## Installation
 
 1. Clone this repository:
