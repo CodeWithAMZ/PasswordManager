@@ -20,9 +20,9 @@ A simple desktop password generator built with **Python** and **Flet**.
 ## Requirements
 
 - Python 3
-- **Flet 0.28.0**
+- **Flet 0.28.3**
 
-> **Important:** This project is configured for **Flet 0.28.0**. Install this exact version rather than the latest release. Newer Flet versions may contain API changes that are incompatible with this project's code.
+> **Important:** This project is configured for **Flet 0.28.3**. Install this exact version rather than the latest release. Newer Flet versions may contain API changes that are incompatible with this project's code.
 
 ## Download for Windows
 
@@ -49,7 +49,7 @@ A standalone Windows executable is built automatically by GitHub Actions. When a
 3. Install the required Flet version:
 
    ```bash
-   python -m pip install flet==0.28.0
+   python -m pip install flet==0.28.3
    ```
 
 ## Run
@@ -65,7 +65,7 @@ A standalone Windows executable is built automatically by GitHub Actions. When a
 | Application | My Password Generator |
 | Version | 1.0 |
 | Language | Python |
-| UI Framework | Flet 0.28.0 |
+| UI Framework | Flet 0.28.3 |
 | Password generation | Python `secrets` module |
 
 ---
