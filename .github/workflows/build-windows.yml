@@ -21,22 +21,35 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install UPX
+        shell: pwsh
+        run: |
+          choco install upx --no-progress -y
+          upx --version
+
       - name: Install pinned build dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install flet==0.28.3 pyinstaller
 
-      - name: Build standalone Windows executable
+      - name: Build optimized Windows executable
         run: |
           flet pack PassGenUI.py --name MyPasswordGenerator --yes
 
-      - name: Prepare download ZIP
+      - name: Check executable size
         shell: pwsh
         run: |
           if (!(Test-Path "dist/MyPasswordGenerator.exe")) {
             throw "Build did not produce dist/MyPasswordGenerator.exe"
           }
-          Compress-Archive -Path "dist/MyPasswordGenerator.exe" -DestinationPath "MyPasswordGenerator-Windows.zip" -Force
+          $file = Get-Item "dist/MyPasswordGenerator.exe"
+          $size = [math]::Round($file.Length / 1MB, 2)
+          Write-Host "EXE Size: $size MB"
+
+      - name: Prepare download ZIP
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "dist/MyPasswordGenerator.exe" -DestinationPath "MyPasswordGenerator-Windows.zip" -CompressionLevel Optimal -Force
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
